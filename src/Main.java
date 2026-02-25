@@ -99,4 +99,117 @@ public class Main {
         System.out.println(complaint);
 
     }
+
+    // Admin Login
+
+    public static void adminLogin(Scanner scanner,ArrayList<Complaint> complaints){
+        boolean isAdminRunning =true;
+
+        while (isAdminRunning){
+
+            System.out.println("=====Admin Menu=====");
+            System.out.println("1. View All Complaints");
+            System.out.println("2. Search Complaint by ID");
+            System.out.println("3. Close Complaint");
+            System.out.println("4. Back to Main Menu");
+            System.out.println("Choose option: ");
+
+
+            int choice;
+            try{
+            choice =Integer.parseInt(scanner.nextLine());;
+            }catch (Exception e){
+                System.out.println("Invalid input! Numbers only");
+                continue;
+            }
+
+            switch (choice){
+                case 1:
+                    viewAllComplaints(complaints);
+                    break;
+
+                case 2:
+                    searchComplaint(scanner,complaints);
+                    break;
+
+                case 3:
+                    closeComplaint(scanner,complaints);
+                    break;
+
+                case 4:
+                    isAdminRunning =false;
+                    break;
+
+                default:
+                    System.out.println("Invalid option");
+            }
+        }
+    }
+
+    // View All Complaints
+
+    public static void viewAllComplaints(ArrayList<Complaint> complaints){
+
+        if (complaints.isEmpty()){
+            System.out.println("No complaints found.");
+            return;
+        }
+
+        for (Complaint complaint: complaints){
+            System.out.println("--------------------");
+            System.out.println(complaint);
+        }
+    }
+
+    // Search by ID
+    public static void searchComplaint(Scanner scanner, ArrayList<Complaint> complaints){
+        System.out.println("Enter Complaint ID to search: ");
+
+        int id;
+
+        try {
+            id = Integer.parseInt(scanner.nextLine());
+        }catch (Exception e){
+            System.out.println("Invalid ID");
+            return;
+        }
+
+        for (Complaint complaint: complaints){
+            if (complaint.getComplainId()==id){
+                System.out.println("Complaint Found: ");
+                System.out.println(complaint);
+                return;
+            }
+        }
+        System.out.println("Complaint not Found");
+    }
+
+    // Close Complaint
+
+    public static void closeComplaint(Scanner scanner ,ArrayList<Complaint>complaints){
+
+        System.out.println("Enter Complaint ID to close: ");
+
+        int id;
+
+        try {
+            id= Integer.parseInt(scanner.nextLine());
+        }catch (Exception e ){
+            System.out.println("Invalid ID");
+            return;
+        }
+        for (Complaint complaint: complaints){
+            if (complaint.getComplainId()== id ){
+                if(complaint.getStatus().equals("Closed")){
+                    System.out.println(" Complaint already Closed");
+                }else {
+                    complaint.closeComplaint();
+                    System.out.println(" Complaint closed successfully");
+                }
+                return;
+            }
+        }
+        System.out.println("Complaint Not Found");
+    }
+
 }
