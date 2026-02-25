@@ -4,9 +4,15 @@ import java.util.Scanner;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
+
+    private static final String ADMIN_PIN="1234";
+
     public static void main(String[] args) {
 
+
         Scanner scanner = new Scanner(System.in);
+        ArrayList<Complaint> complaints =new ArrayList<>();
+
         boolean isRunning = true;
 
         while (isRunning) {
@@ -17,25 +23,33 @@ public class Main {
             System.out.println("2. Admin");
             System.out.println("3. Support Staff");
             System.out.println("4. Exit");
+            System.out.println("Choose an option: ");
 
             //Check if input is a number
             int choice;
 
             try {
-                choice = scanner.nextInt();
+                choice = Integer.parseInt(scanner.nextLine());
             } catch (Exception e) {
                 System.out.println("Invalid input! Please enter numbers only.");
-                scanner.nextLine(); // clear wrong input
                 continue; // go back to menu
             }
 
             switch (choice) {
                 case 1:
-                    System.out.println("Customer module selected.");
+                    createComplaint(scanner,complaints);
                     break;
 
                 case 2:
-                    System.out.println("Admin module selected.");
+                    System.out.println("Enter Admin PIN: ");
+                    String pin =scanner.nextLine();
+
+                    if (pin.equals(ADMIN_PIN)){
+                        System.out.println("Login successful ");
+                        adminLogin(scanner,complaints);
+                    }else {
+                        System.out.println("Incorrect PIN. Access Denied");
+                    }
                     break;
 
                 case 3:
@@ -73,7 +87,7 @@ public class Main {
         System.out.println("Select Priority: ");
         System.out.println("1. Low");
         System.out.println("2. Medium");
-        System.out.println("1. High");
+        System.out.println("3. High");
         System.out.println("Choose option (1-3 pr press Enter for Default");
 
         String priority = "Medium"; //default
@@ -175,7 +189,7 @@ public class Main {
         }
 
         for (Complaint complaint: complaints){
-            if (complaint.getComplainId()==id){
+            if (complaint.getComplaintId()==id){
                 System.out.println("Complaint Found: ");
                 System.out.println(complaint);
                 return;
@@ -199,8 +213,8 @@ public class Main {
             return;
         }
         for (Complaint complaint: complaints){
-            if (complaint.getComplainId()== id ){
-                if(complaint.getStatus().equals("Closed")){
+            if (complaint.getComplaintId() == id) {
+                if(complaint.getStatus().equals("CLOSED")){
                     System.out.println(" Complaint already Closed");
                 }else {
                     complaint.closeComplaint();
